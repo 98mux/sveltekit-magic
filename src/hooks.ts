@@ -7,7 +7,11 @@ import type { Locals } from '$lib/types';
 export const handle: Handle = async ({ event, resolve }) => {
 	const cookies = cookie.parse(event.request.headers.get('cookie') || '');
 
-	const user = await getSession<Locals>(cookies[SESSION_NAME]);
+	let user = undefined;
+	try{
+	user = await getSession<Locals>(cookies[SESSION_NAME]);
+	}
+	catch{}
 
 	event.locals['user'] = user;
 
